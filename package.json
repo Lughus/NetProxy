@@ -1,10 +1,9 @@
 {
   "name": "@lug/netproxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NetProxy used to abstract what system you use to communicate on network",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/japa/cli.js test/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +23,5 @@
   "dependencies": {
     "debug": "^3.1.0",
     "uuid": "^3.2.1"
-  },
-  "devDependencies": {
-    "japa": "^1.0.6"
   }
 }
