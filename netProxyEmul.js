@@ -80,7 +80,6 @@ class NetServerProxyEmitter extends NetServerProxy {
       this.sockets.push(socket)
       this.ev.emit('socket.connect', socket)
     } else this.ev.emit('error', `Socket already connected : ${socket}`)
-    console.log('SRV :',`${socket}.connected`)
     netProxyEmul.emit(`${socket}.connected`)
   }
   _onDisonnect(socket) {
