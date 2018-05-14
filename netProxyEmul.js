@@ -37,7 +37,7 @@ class NetClientProxyEmitter extends NetClientProxy {
       this.ev.emit('connected', this.socket)
       netProxyEmul.on(this.socket, this._onData)
     })
-    netProxyEmul.emit(`net.${port}.connect`, socket)    
+    netProxyEmul.emit(`net.${port}.connect`, socket)
   }
   _onData(data) {
     this.ev.emit('data', data)
@@ -76,7 +76,7 @@ class NetServerProxyEmitter extends NetServerProxy {
     netProxyEmul.on(`net.${port}.disconnect`, this._onDisonnect)
     netProxyEmul.on(`net.${port}.data`, this._onData)
     this.ev.emit('start')
-    this.waiter = setInterval(()=>{},1000)
+    this.waiter = setInterval(() => {}, 1000)
   }
   _onConnect(socket) {
     let sock = this.sockets.find(s => s === socket)
@@ -104,6 +104,7 @@ class NetServerProxyEmitter extends NetServerProxy {
       )
   }
   stop() {
+    let port = this.port
     this.port = null
     this.sockets = []
     netProxyEmul.off(`net.${port}.connect`, this._onConnect)
@@ -112,9 +113,9 @@ class NetServerProxyEmitter extends NetServerProxy {
     this.ev.emit('stop')
     clearInterval(this.waiter)
   }
-  send(socket, data){
+  send(socket, data) {
     netProxyEmul.emit(socket, data)
-  } 
+  }
 }
 
 module.exports = {

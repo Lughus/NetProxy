@@ -1,8 +1,8 @@
-
 const {
   NetClientProxyEmitter,
   NetServerProxyEmitter
 } = require('../index')
+
 const client = new NetClientProxyEmitter()
 //const client2 = new NetClientProxyEmitter()
 const server = new NetServerProxyEmitter()
@@ -20,3 +20,5 @@ client.connect('localhost',9999)
 client.send('Hey srv its me')
 
 client.disconnect()
+
+server.stop()
