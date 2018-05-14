@@ -1,2 +1,4 @@
 # NetProxy
-NetProxy used to abstract what systeme you use to communicate on network
+NetProxy used to abstract what system you use to communicate on network
+
+

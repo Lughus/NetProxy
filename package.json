@@ -1,0 +1,28 @@
+{
+  "name": "netproxy",
+  "version": "1.0.0",
+  "description": "NetProxy used to abstract what system you use to communicate on network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lughus/NetProxy.git"
+  },
+  "keywords": [
+    "net",
+    "proxy",
+    "node"
+  ],
+  "author": "Westixy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lughus/NetProxy/issues"
+  },
+  "homepage": "https://github.com/Lughus/NetProxy#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "uuid": "^3.2.1"
+  }
+}
