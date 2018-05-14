@@ -15,6 +15,7 @@ class NetClientProxyEmitter extends NetClientProxy {
     this._server = null
     this._address = uuidv4()
     this._timeout = 1000
+    this._onData = this._onData.bind(this)
   }
   get state() {
     return this._server ? 'connected' : 'disconnected'
@@ -44,8 +45,9 @@ class NetClientProxyEmitter extends NetClientProxy {
   disconnect() {
     netProxyEmul.emit(`${this._server}.disconnect`, this.socket)
     this.ev.emit('disconnect')
-    this._server = null
     netProxyEmul.off(this.socket, this._onData)
+    console.log(this.socket,netProxyEmul)
+    this._server = null
     this.ev.emit('destroy')
   }
   send(data) {
@@ -59,6 +61,9 @@ class NetServerProxyEmitter extends NetServerProxy {
     this.port = null
     this.sockets = []
     this.waiter = null
+    this._onConnect = this._onConnect.bind(this)
+    this._onDisonnect = this._onDisonnect.bind(this)
+    this._onData = this._onData.bind(this)
   }
   _initEvents() {
     super._initEvents()
@@ -68,9 +73,9 @@ class NetServerProxyEmitter extends NetServerProxy {
   }
   listen(port) {
     this.port = port
-    netProxyEmul.on(`net.${port}.connect`, this._onConnect.bind(this))
-    netProxyEmul.on(`net.${port}.disconnect`, this._onDisonnect.bind(this))
-    netProxyEmul.on(`net.${port}.data`, this._onData.bind(this))
+    netProxyEmul.on(`net.${port}.connect`, this._onConnect)
+    netProxyEmul.on(`net.${port}.disconnect`, this._onDisonnect)
+    netProxyEmul.on(`net.${port}.data`, this._onData)
     this.ev.emit('start')
     this.waiter = setInterval(()=>{},1000)
   }
@@ -108,6 +113,9 @@ class NetServerProxyEmitter extends NetServerProxy {
     this.ev.emit('stop')
     clearInterval(this.waiter)
   }
+  send(socket, data){
+    netProxyEmul.emit(socket, data)
+  } 
 }
 
 module.exports = {
