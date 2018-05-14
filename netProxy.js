@@ -41,7 +41,7 @@ class NetServerProxy {
     this.ev.on('start', () => this._log('start listening'))
     this.ev.on('stop', () => this._log('stop listening'))
     this.ev.on('socket.connect', socket => this._log('s.connect:', socket))
-    this.ev.on('socket.disconnect', socket => this._log('s.diconnect:', socket))
+    this.ev.on('socket.disconnect', socket => this._log('s.disconnect:', socket))
     this.ev.on('socket.data', (socket, data) =>
       this._log('data:', socket, data)
     )

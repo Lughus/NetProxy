@@ -46,7 +46,6 @@ class NetClientProxyEmitter extends NetClientProxy {
     netProxyEmul.emit(`${this._server}.disconnect`, this.socket)
     this.ev.emit('disconnect')
     netProxyEmul.off(this.socket, this._onData)
-    console.log(this.socket,netProxyEmul)
     this._server = null
     this.ev.emit('destroy')
   }
@@ -91,7 +90,7 @@ class NetServerProxyEmitter extends NetServerProxy {
     let index = this.sockets.indexOf(socket)
     if (index !== -1) {
       this.sockets.splice(index, 1)
-      this.ev.emit('socket.diconnect', socket)
+      this.ev.emit('socket.disconnect', socket)
     } else this.ev.emit('error', `Socket already disconnected : ${socket}`)
   }
   _onData(socket, data) {
