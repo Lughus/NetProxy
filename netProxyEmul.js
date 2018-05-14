@@ -15,7 +15,6 @@ class NetClientProxyEmitter extends NetClientProxy {
     this._server = null
     this._address = uuidv4()
     this._timeout = 1000
-    this._initEvents()
   }
   get state() {
     return this._server ? 'connected' : 'disconnected'
@@ -28,7 +27,6 @@ class NetClientProxyEmitter extends NetClientProxy {
   }
   connect(ip, port) {
     let socket = `net.${port}.${this._address}`
-    netProxyEmul.emit(`net.${port}.connect`, socket)
     let timeout = setTimeout(() => {
       this.ev.emit('error', `Server not found ${ip}:${port}`)
     }, this._timeout)
@@ -38,6 +36,7 @@ class NetClientProxyEmitter extends NetClientProxy {
       this.ev.emit('connected', this.socket)
       netProxyEmul.on(this.socket, this._onData)
     })
+    netProxyEmul.emit(`net.${port}.connect`, socket)    
   }
   _onData(data) {
     this.ev.emit('data', data)
@@ -59,6 +58,7 @@ class NetServerProxyEmitter extends NetServerProxy {
     super()
     this.port = null
     this.sockets = []
+    this.waiter = null
   }
   _initEvents() {
     super._initEvents()
@@ -68,10 +68,11 @@ class NetServerProxyEmitter extends NetServerProxy {
   }
   listen(port) {
     this.port = port
-    netProxyEmul.on(`net.${port}.connect`, this._onConnect)
-    netProxyEmul.on(`net.${port}.disconnect`, this._onDisonnect)
-    netProxyEmul.on(`net.${port}.data`, this._onData)
+    netProxyEmul.on(`net.${port}.connect`, this._onConnect.bind(this))
+    netProxyEmul.on(`net.${port}.disconnect`, this._onDisonnect.bind(this))
+    netProxyEmul.on(`net.${port}.data`, this._onData.bind(this))
     this.ev.emit('start')
+    this.waiter = setInterval(()=>{},1000)
   }
   _onConnect(socket) {
     let sock = this.sockets.find(s => s === socket)
@@ -79,6 +80,7 @@ class NetServerProxyEmitter extends NetServerProxy {
       this.sockets.push(socket)
       this.ev.emit('socket.connect', socket)
     } else this.ev.emit('error', `Socket already connected : ${socket}`)
+    console.log('SRV :',`${socket}.connected`)
     netProxyEmul.emit(`${socket}.connected`)
   }
   _onDisonnect(socket) {
@@ -105,6 +107,7 @@ class NetServerProxyEmitter extends NetServerProxy {
     netProxyEmul.off(`net.${port}.disconnect`, this._onDisonnect)
     netProxyEmul.off(`net.${port}.data`, this._onData)
     this.ev.emit('stop')
+    clearInterval(this.waiter)
   }
 }
 
