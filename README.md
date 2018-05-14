@@ -1,7 +1,6 @@
 # NetProxy
 
 NetProxy is a simple "interface" that is will be used to wrap a net utils so we can swap between them easily.
-This package contains the interface and one example that use the events module to emulate a net interface
 
 ## Create a new proxy
 
@@ -13,7 +12,7 @@ class Server extends NetServerProxy { ... }
 class Client extends NetClientProxy { ... }
 ```
 
-please see `netProxyEmul.js` for an example for how it works
+please see `https://github.com/Lughus/NetProxy-events` for an example for how it works
 
 ## Methods
 
